@@ -8,7 +8,7 @@ describe('성공 테스트', function(){
     const param = {
       salary: 2000000,
       family: 2,
-      year: 2018
+      date: new Date(2018, 4, 10)
     }
 
     const expected = 14750;

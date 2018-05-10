@@ -1,15 +1,27 @@
 'use strict';
 
-function getTax({ salary, family, year }) {
+/**
+ * http://www.nts.go.kr/cal/cal_06.asp 참조
+ */
+
+function getTax({ salary, family, date }) {
 
   // 기본 1천원 단위 
   const smallSalary = salary / 1000;
 
-  if (year != 2017 && year != 2018) {
+  // 기준일
+  const baseDateList = [
+    {year: '2018', startAt: new Date(2018, 1, 13)},
+    {year: '2017', startAt: new Date(2017, 1, 13)}
+  ];
+
+  const baseDate = baseDateList.find(o => o.startAt - date < 0)
+  
+  if (baseDate === undefined) {
     throw Error('2017년과 2018년의 간이세액표만 지원합니다.');
   }
 
-  const table = require(`./table-${year}.json`);
+  const table = require(`./table-${baseDate.year}.json`);
 
   // 세금을 계산할 필요가 없는 최소금액의 경우
   if (smallSalary < table[0].o) {
@@ -25,7 +37,6 @@ function getTax({ salary, family, year }) {
   }
 
   const row = table.find(o => o.o >= smallSalary);
-  console.log(row);
   return row.t[row.t.length < family ? row.t.length - 1 : family - 1];
 }
 
