@@ -4,10 +4,10 @@
  * http://www.nts.go.kr/cal/cal_06.asp 참조
  */
 
-function getTax({ salary, family, date }) {
+function get소득세({ 과세지급액, 부양가족수, 지급일 }) {
 
   // 기본 1천원 단위 
-  const smallSalary = salary / 1000;
+  const smallSalary = 과세지급액 / 1000;
 
   // 기준일
   const baseDateList = [
@@ -15,7 +15,7 @@ function getTax({ salary, family, date }) {
     {year: '2017', startAt: new Date(2017, 1, 13)}
   ];
 
-  let baseDate = baseDateList.find(o => o.startAt - date < 0);
+  let baseDate = baseDateList.find(o => o.startAt - 지급일 < 0);
   
   if (baseDate === undefined) {
     console.warn(`2017년 2월 이전 데이터는 2017년 기준으로 계산합니다.`);
@@ -32,13 +32,13 @@ function getTax({ salary, family, date }) {
   // 천만원을 초과하는 경우 별도 계산, 억대연봉자 부럽
   if (smallSalary > 10000) {
 
-    const defaultTax = table[table.length -1].t[family -1];
+    const defaultTax = table[table.length -1].t[부양가족수 -1];
 
-    return year === 2018 ? overTax2018({salary, defaultTax}) : overTax2017({salary, defaultTax});
+    return year === 2018 ? overTax2018({과세지급액, defaultTax}) : overTax2017({과세지급액, defaultTax});
   }
 
   const row = table.find(o => o.o >= smallSalary);
-  return row.t[row.t.length < family ? 0 : family - 1];
+  return row.t[row.t.length < 부양가족수 ? 0 : 부양가족수 - 1];
 }
 
 function overTax2018({salary, defaultTax}) {
@@ -82,4 +82,4 @@ function overTax2017({salary, defaultTax}) {
   return Math.floor(tax * 0.1) * 10;
 }
 
-module.exports = getTax;
+module.exports = get소득세;
