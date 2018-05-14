@@ -15,10 +15,11 @@ function getTax({ salary, family, date }) {
     {year: '2017', startAt: new Date(2017, 1, 13)}
   ];
 
-  const baseDate = baseDateList.find(o => o.startAt - date < 0)
+  let baseDate = baseDateList.find(o => o.startAt - date < 0);
   
   if (baseDate === undefined) {
-    throw Error('2017년과 2018년의 간이세액표만 지원합니다.');
+    console.warn(`2017년 2월 이전 데이터는 2017년 기준으로 계산합니다.`);
+    baseDate = baseDateList[1];
   }
 
   const table = require(`./table-${baseDate.year}.json`);
@@ -37,7 +38,7 @@ function getTax({ salary, family, date }) {
   }
 
   const row = table.find(o => o.o >= smallSalary);
-  return row.t[row.t.length < family ? row.t.length - 1 : family - 1];
+  return row.t[row.t.length < family ? 0 : family - 1];
 }
 
 function overTax2018({salary, defaultTax}) {
