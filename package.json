@@ -1,6 +1,6 @@
 {
   "name": "kor-simple-tax-table",
-  "version": "1.0.7",
+  "version": "1.0.9",
   "description": "",
   "main": "index.js",
   "typings": "index.d.ts",

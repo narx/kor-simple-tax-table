@@ -34,49 +34,49 @@ function get소득세({ 과세지급액, 부양가족수, 지급일 }) {
 
     const defaultTax = table[table.length -1].t[부양가족수 -1];
 
-    return year === 2018 ? overTax2018({과세지급액, defaultTax}) : overTax2017({과세지급액, defaultTax});
+    return baseDate.year === 2018 ? overTax2018({과세지급액, defaultTax}) : overTax2017({과세지급액, defaultTax});
   }
 
   const row = table.find(o => o.o >= smallSalary);
   return row.t[row.t.length < 부양가족수 ? 0 : 부양가족수 - 1];
 }
 
-function overTax2018({salary, defaultTax}) {
+function overTax2018({과세지급액, defaultTax}) {
 
   let tax = 0;
 
   tax += defaultTax;
 
-  if (salary <= 14000000) {
-    tax += (salary - 10000000) * 0.98 * 0.35;
+  if (과세지급액 <= 14000000) {
+    tax += (과세지급액 - 10000000) * 0.98 * 0.35;
   }
   else if (salary <= 28000000) {
-    tax += 1372000 +(salary - 14000000) * 0.98 * 0.38;
+    tax += 1372000 +(과세지급액 - 14000000) * 0.98 * 0.38;
   }
   else if (salary <= 45000000) {
-    tax += 6585600 + (salary - 28000000) * 0.98 * 0.40;
+    tax += 6585600 + (과세지급액 - 28000000) * 0.98 * 0.40;
   }
   else {
-    tax += 13249600 + (salary - 45000000) * 0.98 * 0.42;
+    tax += 13249600 + (과세지급액 - 45000000) * 0.98 * 0.42;
   }
 
   return Math.floor(tax * 0.1) * 10;
 }
 
-function overTax2017({salary, defaultTax}) {
+function overTax2017({과세지급액, defaultTax}) {
 
   let tax = 0;
 
   tax += defaultTax;
 
-  if (salary <= 14000000) {
-    tax += Math.floor((salary - 10000000) * 0.98 * 0.35);
+  if (과세지급액 <= 14000000) {
+    tax += Math.floor((과세지급액 - 10000000) * 0.98 * 0.35);
   }
-  else if (salary <= 45000000) {
-    tax += 1372000 + Math.floor((salary - 14000000) * 0.98 * 0.38);
+  else if (과세지급액 <= 45000000) {
+    tax += 1372000 + Math.floor((과세지급액 - 14000000) * 0.98 * 0.38);
   }
   else {
-    tax += 12916400 + Math.floor((salary - 45000000) * 0.98 * 0.40);
+    tax += 12916400 + Math.floor((과세지급액 - 45000000) * 0.98 * 0.40);
   }
 
   return Math.floor(tax * 0.1) * 10;
