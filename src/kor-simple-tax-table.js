@@ -38,7 +38,7 @@ function get소득세({ 과세지급액, 부양가족수, 지급일 }) {
   }
 
   const row = table.find(o => o.o >= smallSalary);
-  return row.t[row.t.length < 부양가족수 ? 0 : 부양가족수 - 1];
+  return row.t.length < 부양가족수 ? 0 : row.t[부양가족수 - 1];
 }
 
 function overTax2018({과세지급액, defaultTax}) {
